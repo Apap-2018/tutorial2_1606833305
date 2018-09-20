@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Viral Generator</title>
+	</head>
+	<body>
+		<p th:text="${number1} + ' do you love me' + '?'">In My Feeling</p>
+		
+	</body>
+</html>
