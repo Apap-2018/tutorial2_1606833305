@@ -83,14 +83,15 @@
 						    <div class="col-sm-10">
 					
 						    	<div id = "kumpulanRowJabatan">
-						    		<select name = "jabatanPegawai[0].jabatan" class="form-control" id = "jabatan" th:required = "true"> 
+						    		<select name = "jabatanPegawai[0].jabatan" class="form-control" th:id = "row0" th:required = "true"> 
 						    			<option th:value = null>- Pilih Jabatan -</option>
 								    	<a th:each="jabs, iterationStatus : ${allJabatan}">
 									    	<option th:text = ${jabs.nama} th:value = ${jabs.id}></option>
 								      	</a>
 								    </select><br>
 						    	</div>
-								<div style = "color:blue" value = "2" name="addRow" id= "buttonJabatan" >Tambah Jabatan Lainnya</div>
+								<div style = "color:blue" name="addRow" id= "buttonJabatan" >Tambah Jabatan Lainnya</div>
+								<div style = "color:red" name="deleteRow" id= "buttonHapusJabatan">Hapus Jabatan Terakhir</div><br>
 							</div>
 							
 						</div>						
@@ -104,7 +105,7 @@
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
 <script src = "https://code.jquery.com/jquery-1.12.4.js"></script>
-<script>
+<script th:inline="javascript">
 	$("#provinsi").change(function(){
 		console.log("masuk");
 		var data = $(this).val();
@@ -133,16 +134,9 @@
 		            var closingSelectHtml = '</select>';
 		            $( "#dropdownInstansi" ).append(selectHtml + optionsHtml + closingSelectHtml);
 					}
-			
-		            
-					//for (x in objs){
-						//console.log(objs[x]);
-						//$("#form-inst").append("<option class ='instansi' value = " + objs[x].id + ">" + objs[x].nama + " - " + objs[x].provinsi.nama + "</option>");
-						//console.log("<option class ='instansi' value = " + "'" + objs[x].id + "'" + ">" + objs[x].nama + "</option>");
-					//}
-				
 		})
 	});
+	
 	var jabatanCount = 0;
 	$("#buttonJabatan").click(function(){
 		console.log("masuk");
@@ -164,20 +158,39 @@
 					var jabatan = JSON.parse(jab);
 					console.log(jabatan);
 					jabatanCount++;
-	                var selectHtml = '<select class="form-control" id="jabatanPegawai" name="jabatanPegawai['+ jabatanCount +'].jabatan" required>\n';
-
+	                var selectHtml = '<select class="form-control" id ="row' + jabatanCount + '"name="jabatanPegawai['+ jabatanCount +'].jabatan" required>\n';
 	                var optionsHtml = '<option value = 0>- Pilih Jabatan -</option>';
-
 	                $.each( jabatan, function(i, jabatan ) {
 	                    optionsHtml += '<option value=' + jabatan.id + '>' + jabatan.nama + '</option>';
 	                });
-
 	                var closingSelectHtml = '</select><br>';
-
 	                $( "#kumpulanRowJabatan" ).append(selectHtml + optionsHtml + closingSelectHtml);
 				}
 		})
 	});
+	
+	var jabatanCount = /*[[${size}]]*/ 'default';
+	$("#buttonHapusJabatan").click(function(){
+		var data = $(this).val();
+		$.ajax({
+			headers:{	
+				Accept : "application/json"
+			},
+			contentType: "application/json",
+			type : "GET",
+			data : {id:data},
+			url : "/pegawai/cekJabatan",
+			dataType : "json",
+				success: function(json){
+					console.log(jabatanCount);
+					var jab = JSON.stringify(json); 
+					var jabatan = JSON.parse(jab);
+	          		$("#row" + jabatanCount).remove();
+	          		jabatanCount--;
+				}
+		})
+	});
+	
 	
 
 	

@@ -81,16 +81,18 @@
 						    	<div id = "kumpulanRowJabatan">
 						    		<div th:each = "jabatanlama, iterationStatus1 : ${pegawai.jabatanPegawai}">
 				
-							    		<select th:name = "'jabatanPegawai[' + ${iterationStatus1.index} + '].jabatan'" class="form-control" id = "jabatan" th:required = "true">
+							    		<select th:name = "'jabatanPegawai[' + ${iterationStatus1.index} + '].jabatan'" class="form-control" th:id = "'row' + ${iterationStatus1.index}"  th:required = "true">
 							    			<option th:text = ${jabatanlama.jabatan.nama} th:value = ${jabatanlama.jabatan.id}></option>
 									    	<a th:each= "jabs, iterationStatus : ${allJabatan}">
 										    	<option th:text = ${jabs.nama} th:value = ${jabs.id}></option>
 									      	</a>
 									    </select><br>
 									 </div>
-						    	</div>			
+						    	</div>	
+						    	<div style = "color:blue" name="addRow" id= "buttonJabatan">Tambah Jabatan Lainnya</div>
+						    	<div style = "color:red" name="deleteRow" id= "buttonHapusJabatan">Hapus Jabatan Terakhir</div><br>		
 							</div>
-							<div name="addRow" id= "buttonJabatan">Tambah Jabatan Lainnya</div>
+							
 						</div>	
 						<button type="submit" class="btn btn-primary" method = "POST">Simpan</button>
 					</div>
@@ -118,8 +120,6 @@
 				success: function(json){
 					var obj = JSON.stringify(json); 
 					var objs = JSON.parse(obj);
-					console.log(objs[0].nama);
-					console.log ("disini");
 					$(".instansi").remove();
 					$("#instansiAwal").remove();
 					
@@ -133,20 +133,15 @@
 
 		            var closingSelectHtml = '</select>';
 		            $( "#dropdownInstansi" ).append(selectHtml + optionsHtml + closingSelectHtml);
-					
-					
-					
-					//for (x in objs){
-					//	console.log(objs[x].nama);
-						//$("#form-inst").append("<option class ='instansi' th:text ="+ "'"+ objs[x].nama+ "'" +" value = "+ "'"+objs[x].id+"'"+">" + objs[x].nama +"</option>");
-						//console.log("<option class ='instansi' name = 'instansi' th:text ="+ "'"+ objs[x].nama+ "'" +" th:value = "+ "'"+objs[x].id+"'"+">"+objs[x].nama+"</option>");
-					//}
 				}
 		})
 	});
 	
-	
+	var jabatanCount = /*[[${size}]]*/ 'default';
 	$("#buttonJabatan").click(function(){
+		if (jabatanCount == -1){
+			jabatanCount ++;
+		}
 		console.log("masuk");
 		var data = $(this).val();
 		$.ajax({
@@ -162,9 +157,8 @@
 					console.log(jabatanCount);
 					var jab = JSON.stringify(json); 
 					var jabatan = JSON.parse(jab);
-					console.log(jabatan);
-					var jabatanCount = /*[[${size}]]*/ 'default';
-	                var selectHtml = '<select class="form-control" id="jabatanPegawai" name="jabatanPegawai['+ jabatanCount +'].jabatan" required>\n';
+					
+	                var selectHtml = '<select class = "form-control" id ="row' + jabatanCount  + '" name="jabatanPegawai['+ jabatanCount +'].jabatan" required>\n';
 
 	                var optionsHtml = '<option value=null>- Pilih Jabatan -</option>';
 
@@ -176,6 +170,28 @@
 
 	                $( "#kumpulanRowJabatan" ).append(selectHtml + optionsHtml + closingSelectHtml);
 	                jabatanCount++;
+				}
+		})
+	});
+	
+	var jabatanCount = /*[[${size}]]*/ 'default';
+	$("#buttonHapusJabatan").click(function(){
+		var data = $(this).val();
+		$.ajax({
+			headers:{	
+				Accept : "application/json"
+			},
+			contentType: "application/json",
+			type : "GET",
+			data : {id:data},
+			url : "/pegawai/cekJabatan",
+			dataType : "json",
+				success: function(json){
+					console.log(jabatanCount);
+					var jab = JSON.stringify(json); 
+					var jabatan = JSON.parse(jab);
+	          		$("#row" + jabatanCount).remove();
+	          		jabatanCount--;
 				}
 		})
 	});

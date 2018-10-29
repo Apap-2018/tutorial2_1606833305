@@ -29,8 +29,9 @@ public class jabatanController {
 	}
 	
 	@RequestMapping (value = "/jabatan/tambah", method = RequestMethod.POST)
-	public String berhasilTambahJabatan (@ModelAttribute JabatanModel jabatan) {
+	public String berhasilTambahJabatan (@ModelAttribute JabatanModel jabatan, Model model) {
 		jabatanService.tambahJabatan(jabatan);
+		model.addAttribute("jabatan", jabatan);
 		return "berhasilTambahJabatan";
 	}
 	

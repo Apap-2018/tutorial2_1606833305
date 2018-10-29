@@ -16,19 +16,16 @@ public class JabatanPegawaiServiceImp implements JabatanPegawaiService {
 
 	@Override
 	public List<JabatanPegawaiModel> findJabatanPegawaiByJabatan(long idJabatan) {
-		// TODO Auto-generated method stub
 		return jabatanPegawaiDb.findJabatanPegawaiByJabatan(idJabatan);
 	}
 
 	@Override
 	public List<JabatanPegawaiModel> selectAll() {
-		// TODO Auto-generated method stub
 		return jabatanPegawaiDb.findAll();
 	}
 
 	@Override
 	public List<JabatanPegawaiModel> findJabatanPegawaiByPegawai(PegawaiModel pegawai) {
-		// TODO Auto-generated method stub
 		return jabatanPegawaiDb.findByPegawai(pegawai);
 	}
 

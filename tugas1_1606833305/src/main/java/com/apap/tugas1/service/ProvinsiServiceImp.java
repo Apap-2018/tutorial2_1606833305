@@ -19,13 +19,11 @@ public class ProvinsiServiceImp implements ProvinsiService{
 	
 	@Override
 	public List<ProvinsiModel> selectAll() {
-		// TODO Auto-generated method stub
 		return provinsiDb.findAll();
 	}
 
 	@Override
 	public ProvinsiModel findProvinsiById(long id) {
-		// TODO Auto-generated method stub
 		return provinsiDb.findProvinsiById(id);
 	}
 

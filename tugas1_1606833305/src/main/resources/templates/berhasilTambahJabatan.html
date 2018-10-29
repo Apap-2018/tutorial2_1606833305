@@ -6,12 +6,60 @@
 	<object th:include="fragments/fragment :: js" th:remove="tag"></object>
 </head>
 
+<style>
+	.flex {
+		display: flex;
+	}
+	
+	#card{
+		margin-top : 10px;
+		margin-left:10px;
+	}
+</style>
+
 <body>
 	<nav th:replace="fragments/fragment :: navbar"></nav>
 	<div class="alert alert-success">
   		<strong>Success!</strong>
   		<h6>Jabatan Berhasil Ditambahkan</h6>
 	</div>
+	
+	<div class="row"  id = "card">
+		<div class ="col-md-6" >
+			<div class="card" >
+				<div class = "card-header" th:text="'Detail Jabatan - ' + ${jabatan.nama}"></div>	
+				<div class="card-body">
+					<table class="table">
+						<tbody>
+							<tr>
+					        	<td>Nama</td>
+					        	<td th:text = "${jabatan.nama}"></td>
+					        	<td>
+					        	<td>
+					      	</tr>
+					      	<tr>
+					        	<td>Deskripsi</td>
+					        	<td th:text = "${jabatan.deskripsi}"></td>
+					        	<td>
+					        	<td>
+					      	</tr>
+					      	<tr>
+					        	<td>Gaji Pokok</td>
+					        	<td th:text = "${jabatan.gajiPokok}"></td>
+					        	<td>
+					        	<td>
+					      	</tr>
+					      	
+					      	
+						
+						</tbody>
+					</table>
+					    	
+			    	
+				</div>						
+			</div>
+		</div>
+	</div>	
 
 </body>
 </html>

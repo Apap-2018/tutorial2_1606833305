@@ -57,15 +57,6 @@ public class pegawaiController {
 	public String tampilkan (String nip, Model model) {	
 		PegawaiModel pegawai = pegawaiService.cariPegawaiByNip(nip);
 		int gajiPegawaiFix = pegawaiService.gajiTertinggiPegawai(pegawai);
-		//double gajiTertinggi = 0;
-		//for (JabatanPegawaiModel jabatan : pegawai.getJabatanPegawai()) {
-			//if (jabatan.getJabatan().getGajiPokok() > gajiTertinggi) {
-				//gajiTertinggi = jabatan.getJabatan().getGajiPokok();
-			//}
-		//}
-		//double gaji = gajiTertinggi + (pegawai.getInstansi().getProvinsi().getPresentase_tunjangan() * gajiTertinggi/100);
-		//int gajiInt = (int) gaji;
-		
 		model.addAttribute("pegawai", pegawai);
 		model.addAttribute("gaji", gajiPegawaiFix);
 		return "pegawaiView";
@@ -86,9 +77,7 @@ public class pegawaiController {
 	@RequestMapping (value = "/pegawai/cekInstansi", method = RequestMethod.GET)
 	public @ResponseBody Object coba (@RequestParam ("id") String idProvinsi, Model model) {
 		List <InstansiModel> instansi = new ArrayList <InstansiModel>();
-		System.out.println(idProvinsi);
 		if (idProvinsi.equalsIgnoreCase("0")) {
-			//System.out.println("masuk 0");
 			instansi = instansiService.selectAll();	
 		}
 		else {
@@ -111,7 +100,10 @@ public class pegawaiController {
 		jabatanPegawaiService.setPegawaiJab(pegawai);
 		pegawaiService.setNIP(pegawai);
 		pegawaiService.addPegawai(pegawai);
+		int gajiPegawaiFix = pegawaiService.gajiTertinggiPegawai(pegawai);
 		model.addAttribute("nips", pegawai.getNip());
+		model.addAttribute("pegawai", pegawai);
+		model.addAttribute("gaji",gajiPegawaiFix);
 		return "berhasilTambahPegawai";
 	}
 	
@@ -125,39 +117,13 @@ public class pegawaiController {
 		
 		PegawaiModel pegTua = pegUrut.get(0);
 		PegawaiModel pegMuda = pegUrut.get(pegUrut.size()-1);
-		
-		//Hitung Tua
-		//List <String> namaJabatanPegawaiTua = new ArrayList<String>();
 		int gajiTertinggiPegTua = pegawaiService.gajiTertinggiPegawai(pegTua);
 		int gajiTertinggiPegMuda = pegawaiService.gajiTertinggiPegawai(pegMuda);
-		
-		//double gajiTertinggiTua = 0;
-		//for (JabatanPegawaiModel jabatan : pegTua.getJabatanPegawai()) {
-			//namaJabatanPegawaiTua.add(jabatan.getJabatan().getNama());
-			//if (jabatan.getJabatan().getGajiPokok() > gajiTertinggiTua) {
-				//gajiTertinggiTua = jabatan.getJabatan().getGajiPokok();
-			//}
-		//}
-		//double gajiTua = gajiTertinggiTua + (pegTua.getInstansi().getProvinsi().getPresentase_tunjangan() * gajiTertinggiTua/100);		
-		
-		//Hitung Muda
-		//List <String> namaJabatanMuda = new ArrayList<String>();
-		//double gajiTertinggiMuda = 0;
-		
-	//	for (JabatanPegawaiModel jabatan : pegMuda.getJabatanPegawai()) {
-		//	namaJabatanMuda.add(jabatan.getJabatan().getNama());
-			//if (jabatan.getJabatan().getGajiPokok() > gajiTertinggiMuda) {
-				//gajiTertinggiMuda = jabatan.getJabatan().getGajiPokok();
-			//}
-		//}
-		//double gajiMuda = gajiTertinggiMuda + (pegMuda.getInstansi().getProvinsi().getPresentase_tunjangan() * gajiTertinggiMuda/100);
-		
+	
 		model.addAttribute("pegTua", pegTua);
 		model.addAttribute("pegMuda", pegMuda);
-		//model.addAttribute("listJabatanTua", namaJabatanPegawaiTua);
 		model.addAttribute("gajiTua", gajiTertinggiPegTua);
 		model.addAttribute("gajiMuda", gajiTertinggiPegMuda);
-		//model.addAttribute("listJabatanMuda", namaJabatanMuda);
 		model.addAttribute("instansi", instansi);
 		model.addAttribute("kotaInstansi", instansi.getProvinsi().getNama());
 		return "lihatPegawaiTertua-Termuda";
@@ -178,7 +144,7 @@ public class pegawaiController {
 		model.addAttribute("provinsi", provinsi);
 		model.addAttribute("instansi", instansi);
 		model.addAttribute("jabatan", jabatan);
-		System.out.println(idProvinsi + idInstansi + idJabatan + "haha");
+		
 		List <PegawaiModel> pegawai = new ArrayList<PegawaiModel>();
 		
 		// cek jika sudah ada yang di isi untuk menolak yang awal masuk kesini
@@ -235,7 +201,6 @@ public class pegawaiController {
 					}
 				}
 			}
-		
 			model.addAttribute("pegawai", pegawai);
 			return "cariPegawai";
 		}
@@ -253,7 +218,6 @@ public class pegawaiController {
 		PegawaiModel pegawai = pegawaiService.cariPegawaiByNip(nip);
 		List <ProvinsiModel> allProvinsi = provinsiService.selectAll();
 		List <JabatanModel> allJabatan = jabatanService.selectAll();
-		
 		model.addAttribute("pegawai", pegawai);
 		model.addAttribute("size", pegawai.getJabatanPegawai().size());
 		model.addAttribute("allProvinsi", allProvinsi);
@@ -271,46 +235,5 @@ public class pegawaiController {
 		pegawaiService.updatePegawai(pegawai, pegawai.getId());
 		model.addAttribute("nips", pegawai.getNip());
 		return "berhasilUbahPegawai";
-		
-		
-		
-		/**
-		 * 
-		
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		String tanggal = formatter.format(pegawai.getTanggallahir());
-		java.util.Date formattedTglLahir =  formatter.parse(tanggal);
-		SimpleDateFormat format = new SimpleDateFormat("ddMMyyyy");
-		String tanggalLahirFormat = format.format(formattedTglLahir);
-		
-		String tglLahir = tanggalLahirFormat.substring(0, 4) + ""+ tanggalLahirFormat.substring(6); //ddmmyy
-		String tanggalBaru ="" + pegawai.getTanggallahir() + "";
-		
-		InstansiModel instansi = instansiService.cariInstansiById(pegawai.getInstansi().getId());
-		List <PegawaiModel> allPegawai = instansi.getPegawai_instansi();
-		int indexPegawai = 1;
-		for (PegawaiModel peg : allPegawai) {
-			String tgl = "" + peg.getTanggallahir() + "";
-			
-			if (peg.getTahun_masuk().equalsIgnoreCase(pegawai.getTahun_masuk()) && tgl.equalsIgnoreCase(tanggalBaru)) {
-				indexPegawai++;
-			}
-		}
-		
-		String no_urut = "";
-		if (indexPegawai < 10) {
-			no_urut = "0" + indexPegawai;
-		}
-		else {
-			no_urut = "" + indexPegawai;
-		}
-		
-		String kodeInstansi = ""+pegawai.getInstansi().getId()+"";
-		
-		String nip = kodeInstansi + tglLahir + pegawai.getTahun_masuk() + no_urut;
-		*/
-		//pegawai.setNip(nip);
-		//pegawaiService.updatePegawai(pegawai, pegawai.getId());
-		
 	}
 }

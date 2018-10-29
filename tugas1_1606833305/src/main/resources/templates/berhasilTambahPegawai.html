@@ -12,6 +12,77 @@
   		<strong>Success!</strong>
   		<h6 th:text ="'Pegawai dengan NIP ' + ${nips} + ' berhasil ditambahkan'"></h6>
 	</div>
+	
+	<div class="row lihatPegawai"  id = "card">
+		<div class ="col-md-6" >
+			<div class="card" >
+				<div class = "card-header" th:text="'Lihat Data Pegawai - ' + ${pegawai.nip}"></div>		
+				<div class="card-body" id = "kotak">
+					<table class="table">
+						<tbody>
+					    	<tr>
+					        	<td>NIP</td>
+					        	<td th:text = "${pegawai.nip}"></td>
+					        	<td>
+					        	<td>
+					      	</tr>
+					      	
+					      	<tr>
+					        	<td>Nama</td>
+					        	<td th:text = "${pegawai.nama}"></td>
+					        	<td>
+					        	<td>
+					      	</tr>
+					      	
+					      	<tr>
+					        	<td>Tempat Lahir</td>
+					        	<td th:text = "${pegawai.tempat_lahir}"></td>
+					        	<td>
+					        	<td>
+					      	</tr>
+					      	
+					      	<tr>
+					        	<td>Tanggal Lahir</td>
+					        	<td th:text = "${pegawai.tanggallahir}"></td>
+					        	<td>
+					        	<td>
+					      	</tr>
+					      	
+					      	<tr>
+					        	<td>Tahun Masuk</td>
+					        	<td th:text = "${pegawai.tahun_masuk}"></td>
+					        	<td>
+					        	<td>
+					      	</tr>
+					      	
+					      	<tr>
+					        	<td>Nama Instansi</td>
+					        	<td th:text = "${pegawai.instansi.nama} + ' - ' + ${pegawai.instansi.provinsi.nama}"></td>
+					        	<td>
+					        	<td>
+					      	</tr>
+					    				      	
+					      	<tr>
+					      		<td>Jabatan</td>
+					      		<td>
+					      			<div th:each="jabatan, iterationStatus : ${pegawai.jabatanPegawai}">
+					      				<div th:text="${iterationStatus.count} + '. ' + ${jabatan.jabatan.nama}" ></div>
+									</div>
+								</td>
+							</tr>
+							
+							<tr>
+					      		<td>Gaji</td>
+					      		<td>
+									<div th:text = "'Rp ' + *{gaji}"></div>
+								</td>
+							</tr>
+					    </tbody>
+				 	</table>
+				</div>		
+			</div>
+		</div>
+	</div><br>
 
 </body>
 </html>

@@ -1,5 +1,6 @@
 package com.apap.tugas1.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,13 +30,11 @@ public class PegawaiServiceImp implements PegawaiService{
 
 	@Override
 	public List<PegawaiModel> selectAllPegawai() {
-		// TODO Auto-generated method stub
 		return pegawaiDb.findAll();
 	}
 
 	@Override
 	public List<PegawaiModel> getPegawaiUrut(InstansiModel instansi) {
-		// TODO Auto-generated method stub
 		return pegawaiDb.findByInstansiOrderByTanggallahirAsc(instansi);
 	}
 
@@ -47,13 +46,11 @@ public class PegawaiServiceImp implements PegawaiService{
 
 	@Override
 	public PegawaiModel cariPegawaiById(long id) {
-		// TODO Auto-generated method stub
 		return pegawaiDb.findPegawaiById(id);
 	}
 
 	@Override
 	public void updatePegawai(PegawaiModel pegawaiBaru, long id) {
-		// TODO Auto-generated method stub
 		PegawaiModel pegawaiLama = pegawaiDb.findPegawaiById(id);
 		pegawaiLama.setInstansi(pegawaiBaru.getInstansi());
 		pegawaiLama.setJabatanPegawai(pegawaiBaru.getJabatanPegawai());
@@ -74,27 +71,36 @@ public class PegawaiServiceImp implements PegawaiService{
 	}
 
 	@Override
-	public void setNIP(PegawaiModel pegawai) {
-		List <PegawaiModel> pegawaiSeInstansi = pegawai.getInstansi().getPegawai_instansi();
-		int indexSama = 1;
-		for (PegawaiModel peg : pegawaiSeInstansi) {
-			if (pegawai.getTahun_masuk().equals(peg.getTahun_masuk()) && pegawai.getTanggallahir().equals(peg.getTanggallahir())) {
-				indexSama ++;
+	public void setNIP(PegawaiModel pegawai) {		
+		List <PegawaiModel> pegUrutIDAsc = pegawaiDb.findByInstansiOrderByIdAsc(pegawai.getInstansi());
+		List <PegawaiModel> pegSama = new ArrayList<>();
+		for (PegawaiModel pg : pegUrutIDAsc) {
+			if (pegawai.getTahun_masuk().equals(pg.getTahun_masuk()) && pegawai.getTanggallahir().equals(pg.getTanggallahir())) {
+				pegSama.add(pg);
 			}
 		}
 		
-		String noUrut = "";
-		if (indexSama < 10) {
-			noUrut = "0" + indexSama;
+		int noUrutInt = 0;
+		if (pegSama.isEmpty()) {
+			noUrutInt = 1;
 		}
 		else {
-			noUrut = "" + indexSama;
+			String nip = pegSama.get(pegSama.size()-1).getNip();
+			String noUrut = nip.substring(14, 16);
+			noUrutInt = Integer.parseInt(noUrut) + 1;
 		}
-		
+
+		String noUrutBaru = "";
+		if (noUrutInt < 10) {
+			noUrutBaru = "0" + noUrutInt;
+		}
+		else {
+			noUrutBaru = "" + noUrutInt;
+		}
 		String tgl = "" + pegawai.getTanggallahir() + "";
 		String tglDMY = tgl.substring(8,10) + tgl.substring(5,7) + tgl.substring(2,4);
-		String nip = pegawai.getInstansi().getId() + tglDMY + pegawai.getTahun_masuk() + noUrut;
-		pegawai.setNip(nip);		
+		String nipFix = pegawai.getInstansi().getId() + tglDMY + pegawai.getTahun_masuk() + noUrutBaru;
+		pegawai.setNip(nipFix);		
 	}
 
 	@Override
@@ -103,11 +109,7 @@ public class PegawaiServiceImp implements PegawaiService{
 		
 		if ( (!pegawai.getInstansi().equals(peg.getInstansi())) || (!pegawai.getTahun_masuk().equalsIgnoreCase(peg.getTahun_masuk())) || (!pegawai.getTanggallahir().equals(peg.getTanggallahir())) ) {
 			setNIP (pegawai);
-			//System.out.println("masuk sini ganti nip" +  pegawai.getNip() + "nip baru" );
-		}
-		
-		//PegawaiModel pegawai = pegawaiDb.findPegawaiById(id);
-		
+		}	
 	}
 
 	@Override
