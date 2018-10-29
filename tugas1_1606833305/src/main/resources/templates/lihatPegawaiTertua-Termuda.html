@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlsn:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Detail Pegawai Tertua Termuda</title>	
+	<object th:include="fragments/fragment :: css" th:remove="tag"></object>
+	<object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+
+<style>
+	.row{
+		margin-left:auto;
+		margin-right:auto;
+		margin-top: 20px;
+	}
+	
+	.card-header{
+		font-size:20px;
+	}
+	
+</style>
+<body>
+	<nav th:replace="fragments/fragment :: navbar"></nav>	
+	<div class="row">
+		<div class ="col-md-6" >
+			<div class="card" >
+				<div class = "card-header" th:text="'Data Pegawai Termuda - ' + ${pegMuda.nip}"></div>	
+					<div class="card-body">
+						<table class="table">
+							<tbody>
+						    	<tr>
+						        	<td>NIP</td>
+						        	<td th:text = "${pegMuda.nip}"></td>
+						        	<td>
+						        	<td>
+						      	</tr>
+						      	<tr>
+						        	<td>Nama</td>
+						        	<td th:text = "${pegMuda.nama}"></td>
+						        	<td>
+						        	<td>
+						      	</tr>					      	
+						      	<tr>
+						        	<td>Tempat Lahir</td>
+						        	<td th:text = "${pegMuda.tempat_lahir}"></td>
+						        	<td>
+						        	<td>
+						      	</tr>					      	
+						      	<tr>
+						        	<td>Tanggal Lahir</td>
+						        	<td th:text = "${pegMuda.tanggallahir}"></td>
+						        	<td>
+						        	<td>
+						      	</tr>					      	
+						      	<tr>
+						        	<td>Tahun Masuk</td>
+						        	<td th:text = "${pegMuda.tahun_masuk}"></td>
+						        	<td>
+						        	<td>
+						      	</tr>					      	
+						      	<tr>
+						        	<td>Nama Instansi</td>
+						        	<td th:text = "${pegMuda.instansi.nama} + ' - ' + ${kotaInstansi}"></td>
+						        	<td>
+						        	<td>
+						      	</tr>					    					      	
+						      	<tr>
+						      		<td>Jabatan</td>
+						      		<td>
+						      			<div th:each="jabatanPeg, iterationStatus : ${pegMuda.jabatanPegawai}">
+						      				<div th:text="${iterationStatus.count} + '. ' + ${jabatanPeg.jabatan.nama}" ></div>
+										</div>
+									</td>
+								</tr>							
+								<tr>
+						      		<td>Gaji</td>
+						      		<td>
+										<div th:text = "'Rp ' + *{gajiMuda}"></div>
+									</td>
+								</tr>
+						    </tbody>
+					 	</table>	
+					</div>
+				</div>
+			</div>
+			
+			<div class ="col-md-6" >
+				<div class="card" >
+					<div class = "card-header" th:text="'Data Pegawai Tertua - ' + ${pegTua.nip}"></div>
+						<div class="card-body">
+							<table class="table">
+								<tbody>
+							    	<tr>
+							        	<td>NIP</td>
+							        	<td th:text = "${pegTua.nip}"></td>
+							        	<td>
+							        	<td>
+							      	</tr>					      	
+							      	<tr>
+							        	<td>Nama</td>
+							        	<td th:text = "${pegTua.nama}"></td>
+							        	<td>
+							        	<td>
+							      	</tr>					      	
+							      	<tr>
+							        	<td>Tempat Lahir</td>
+							        	<td th:text = "${pegTua.tempat_lahir}"></td>
+							        	<td>
+							        	<td>
+							      	</tr>					      	
+							      	<tr>
+							        	<td>Tanggal Lahir</td>
+							        	<td th:text = "${pegTua.tanggallahir}"></td>
+							        	<td>
+							        	<td>
+							      	</tr>					      	
+							      	<tr>
+							        	<td>Tahun Masuk</td>
+							        	<td th:text = "${pegTua.tahun_masuk}"></td>
+							        	<td>
+							        	<td>
+							      	</tr>					      	
+							      	<tr>
+							        	<td>Nama Instansi</td>
+							        	<td th:text = "${pegTua.instansi.nama} + ' - ' + ${kotaInstansi}"></td>
+							        	<td>
+							        	<td>
+							      	</tr>					    					      	
+							      	<tr>
+							      		<td>Jabatan</td>
+							      		<td>
+							      			<div th:each="jabatanPeg, iterationStatus : ${pegTua.jabatanPegawai}">
+							      				<div th:text="${iterationStatus.count} + '. ' + ${jabatanPeg.jabatan.nama}" ></div>
+											</div>
+										</td>
+									</tr>							
+									<tr>
+							      		<td>Gaji</td>
+							      		<td>
+											<div th:text = "'Rp ' + *{gajiTua}"></div>
+										</td>
+									</tr>
+							    </tbody>
+						 	</table>			 	
+						</div>			
+					</div>
+				</div>				
+		</div><br>
+</body>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlsn:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Detail Jabatan</title>	
+	<object th:include="fragments/fragment :: css" th:remove="tag"></object>
+	<object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+
+<style>
+	.flex {
+		display: flex;
+	}
+	
+	#card{
+		margin-top : 10px;
+		margin-left:10px;
+	}
+</style>
+<body>
+	<nav th:replace="fragments/fragment :: navbar"></nav>
+	<div class="row"  id = "card">
+		<div class ="col-md-6" >
+			<div class="card" >
+				<div class = "card-header" th:text="'Detail Jabatan - ' + ${jabatan.nama}"></div>	
+				<div class="card-body">
+					<table class="table">
+						<tbody>
+							<tr>
+					        	<td>Nama</td>
+					        	<td th:text = "${jabatan.nama}"></td>
+					        	<td>
+					        	<td>
+					      	</tr>
+					      	<tr>
+					        	<td>Deskripsi</td>
+					        	<td th:text = "${jabatan.deskripsi}"></td>
+					        	<td>
+					        	<td>
+					      	</tr>
+					      	<tr>
+					        	<td>Gaji Pokok</td>
+					        	<td th:text = "${jabatan.gajiPokok}"></td>
+					        	<td>
+					        	<td>
+					      	</tr>
+					      	
+					      	<tr>
+					        	<td>Jumlah Pegawai</td>
+					        	<td th:text="${jabatan.jabatanPegawai.size()}"></td>
+					        	<td>
+					        	<td>
+					      	</tr>
+						
+						</tbody>
+					</table>
+					    	
+			    	<div class = "flex">
+						<form th:action="@{/jabatan/ubah}" method = "GET">
+							<button style = "margin-right:10px" class="btn btn-primary" type="submit" name = "idJabatan" th:value = "${jabatan.id}">Ubah</button>
+						</form>
+						
+						<form th:action="@{/jabatan/hapus}" method = "POST">
+							<button class="btn btn-primary" type = "submit" name = "idJabatan" th:value = "${jabatan.id}">Hapus</button>
+						</form>
+					</div>	
+				</div>						
+			</div>
+		</div>
+	</div>	
+</body>
+</html>

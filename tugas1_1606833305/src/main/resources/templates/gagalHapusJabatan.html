@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+	<title>Hapus Jabatan Gagal</title>
+	<object th:include="fragments/fragment :: css" th:remove="tag"></object>
+	<object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+
+<body>
+	<nav th:replace="fragments/fragment :: navbar"></nav>
+	<div class="alert alert-warning">
+  		<strong>Error!</strong>Jabatan tidak bisa dihapus karena ada pegawai yang memiliki jabatan tersebut
+	</div>
+
+</body>
+</html>
+
+
+		

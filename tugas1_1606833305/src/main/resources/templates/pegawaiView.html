@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+	<title>View Detail Pegawai</title>
+	<object th:include="fragments/fragment :: css" th:remove="tag"></object>
+	<object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+
+<style>
+	#card{
+		margin-top : 20px;
+		margin-left : 10px;
+	}
+	
+	#kotak{
+		margin : 30px;
+	}
+	
+	.card-header{
+		font-size :20px;	
+	}
+
+</style>
+
+<body>
+	<nav th:replace="fragments/fragment :: navbar"></nav>
+	<div class="row lihatPegawai"  id = "card">
+		<div class ="col-md-6" >
+			<div class="card" >
+				<div class = "card-header" th:text="'Lihat Data Pegawai - ' + ${pegawai.nip}"></div>		
+				<div class="card-body" id = "kotak">
+					<table class="table">
+						<tbody>
+					    	<tr>
+					        	<td>NIP</td>
+					        	<td th:text = "${pegawai.nip}"></td>
+					        	<td>
+					        	<td>
+					      	</tr>
+					      	
+					      	<tr>
+					        	<td>Nama</td>
+					        	<td th:text = "${pegawai.nama}"></td>
+					        	<td>
+					        	<td>
+					      	</tr>
+					      	
+					      	<tr>
+					        	<td>Tempat Lahir</td>
+					        	<td th:text = "${pegawai.tempat_lahir}"></td>
+					        	<td>
+					        	<td>
+					      	</tr>
+					      	
+					      	<tr>
+					        	<td>Tanggal Lahir</td>
+					        	<td th:text = "${pegawai.tanggallahir}"></td>
+					        	<td>
+					        	<td>
+					      	</tr>
+					      	
+					      	<tr>
+					        	<td>Tahun Masuk</td>
+					        	<td th:text = "${pegawai.tahun_masuk}"></td>
+					        	<td>
+					        	<td>
+					      	</tr>
+					      	
+					      	<tr>
+					        	<td>Nama Instansi</td>
+					        	<td th:text = "${pegawai.instansi.nama} + ' - ' + ${pegawai.instansi.provinsi.nama}"></td>
+					        	<td>
+					        	<td>
+					      	</tr>
+					    				      	
+					      	<tr>
+					      		<td>Jabatan</td>
+					      		<td>
+					      			<div th:each="jabatan, iterationStatus : ${pegawai.jabatanPegawai}">
+					      				<div th:text="${iterationStatus.count} + '. ' + ${jabatan.jabatan.nama}" ></div>
+									</div>
+								</td>
+							</tr>
+							
+							<tr>
+					      		<td>Gaji</td>
+					      		<td>
+									<div th:text = "'Rp ' + *{gaji}"></div>
+								</td>
+							</tr>
+					    </tbody>
+				 	</table>
+				 	
+				 	<form th:action="@{/pegawai/ubah}" method = "GET">
+						<button name = "nip" class="btn btn-primary" type = "submit" th:value = "${pegawai.nip}">Ubah</button>
+					</form>
+				</div>		
+			</div>
+		</div>
+	</div><br>
+</body>
+</html>
+
+
+		

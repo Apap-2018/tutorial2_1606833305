@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlsn:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Lihat Semua Jabatan</title>	
+	<object th:include="fragments/fragment :: css" th:remove="tag"></object>
+	<object th:include="fragments/fragment :: js" th:remove="tag"></object>
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+</head>
+
+<style>
+	#kotak{
+		margin-left : 80px;
+		margin-top:20px;
+	}
+</style>
+<body>
+	<nav th:replace="fragments/fragment :: navbar"></nav>
+	<div class="row">
+		<div class ="col-md-11">
+			<div class="card" id = "kotak">
+				<div class = "card-header">
+					<h5>Daftar Jabatan</h5>
+				</div>
+				
+				<div class="card-body">
+					<table class="display table table-striped" border = "I" id="table_id" >
+					    <thead>
+					        <tr>
+					            <th>Nama</th>
+					            <th>Deskripsi</th>
+					            <th>Gaji Pokok</th>
+					            <th>Jumlah Pegawai</th>
+					 
+					        </tr>
+					    </thead>
+					    
+						 <tbody>
+							<tr th:each="jabatan, iterationStatus : ${listJabatan}">		
+								<td th:text="${jabatan.nama}"></td>
+								<td th:text="${jabatan.deskripsi}"></td>
+								<td th:text="${jabatan.gajiPokok}"></td>
+								<td th:text="${jabatan.jabatanPegawai.size()}"></td>												
+							</tr>
+						</tbody>   
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</body>
+
+<script>
+	$(document).ready( function () {
+	    $('#table_id').DataTable();
+	} );
+</script>
+</html>

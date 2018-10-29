@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlsn:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Home</title>	
+	<object th:include="fragments/fragment :: css" th:remove="tag"></object>
+	<object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+<style>
+	.cari{
+	
+		margin-top:30px;
+	}
+	
+	.opening{
+		margin-left:auto;
+		margin-top:40px;
+		margin-right : auto;
+		text-align:center;
+		
+	}
+	
+</style>
+<body>
+	<nav th:replace="fragments/fragment :: navbar"></nav>
+	<div class="opening">
+		<h4> Sistem Informasi Kepegawaian </h4>
+		<h5> Selamat Datang di Sistem Informasi Kepegawaian</h5>
+	</div>
+		
+		<div class="row cari">
+			<div class ="col-md-4">
+				<div class="card">
+					<div class = "card-header">
+						Lihat Data Pegawai berdasarkan NIP
+					</div>
+					<form th:action="@{/pegawai}" method = "GET">
+						<div class="card-body">
+							<label>Nomor Induk Pegawai:</label>
+							<input type="text" name="nip" class="form-control" placeholder="Masukkan NIP">
+							<p></p>
+							<button type="submit" class="btn btn-primary">Lihat</button>
+						</div>
+					</form>
+				</div>
+			</div>
+			
+			<div class ="col-md-4" id = "cariJabatan">
+				<div class="card">
+					<div class = "card-header">
+						Lihat Detail Jabatan
+					</div>
+					<form th:action="@{/jabatan/view}" method = "GET">
+						<div class="card-body">
+							  
+							  <div class="form-group">
+							    <label>Pilih Jabatan:</label>
+							    <select class="form-control" name="idJabatan">
+							      <a th:each="jabatan, iterationStatus : ${listJabatan}">
+								      <option th:text = ${jabatan.nama} th:value = ${jabatan.id}></option>
+							      </a>
+							    </select>
+							  </div>
+							<p></p>
+							<button type="submit" class="btn btn-primary">Lihat</button>
+						</div>
+					</form>
+				</div>
+			</div>
+			
+			<div class ="col-md-4" id = "cariTertuaTermuda">
+				<div class="card">
+					<div class = "card-header">
+						Lihat Pegawai Termuda dan Tertua
+					</div>
+					<form th:action="@{/pegawai/termuda-tertua}" method = "GET">
+						<div class="card-body">			  
+							  <div class="form-group">
+							    <label>Pilih Instansi:</label>
+							    <select class="form-control" name="idInstansi">
+							      <a th:each="instansi, iterationStatus : ${listInstansi}">
+								      <option th:text = "${instansi.nama} + ' - ' + ${instansi.provinsi.nama}" th:value = ${instansi.id}></option>
+							      </a>
+							    </select>
+							  </div>
+							<p></p>
+							<button type="submit" class="btn btn-primary">Lihat</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div><br>
+</body>
+</html>

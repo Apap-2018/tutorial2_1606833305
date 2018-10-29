@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlsn:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Tambah Jabatan</title>	
+	<object th:include="fragments/fragment :: css" th:remove="tag"></object>
+	<object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+ <style>
+ 	#kotak{
+ 		margin-top:10px;
+ 		margin-left:10px;
+ 	}
+ </style>
+<body>
+	<nav th:replace="fragments/fragment :: navbar"></nav>
+	
+	<div class="container-fluid">
+		<div class="row" id = "kotak">
+		
+			<div class ="col-md-6">
+				<div class="card" >
+					<div class = "card-header"> Tambah Jabatan</div>
+					
+					<div class="card-body">
+						<form class="form-horizontal"  th:action = "@{/jabatan/tambah}" th:object="${jabatan}" method = "POST">
+							<div class="form-group">
+								<label class="control-label col-sm-2">Nama:</label>
+								<div class="col-sm-6">
+							    	<input type="text" class="form-control" name="nama" placeholder="Masukkan Nama Jabatan" th:required = "true">
+							    </div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-2">Deskripsi:</label>
+								<div class="col-sm-6">
+							    	<input type="text" class="form-control" name="deskripsi" placeholder="Masukkan deskripsi jabatan" th:required = "true">
+							    </div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-2">Gaji Pokok:</label>
+								<div class="col-sm-6">
+							    	<input type="number" class="form-control" name="gajiPokok" placeholder="Masukkan gaji pokok" th:required = "true">
+							    </div>
+							</div>
+	
+							<button class="btn btn-primary" type="submit">Simpan</button>
+						</form>	
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>

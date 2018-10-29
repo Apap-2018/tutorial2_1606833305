@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Edit Pilot</title>
+</head>
+
+<body>
+	<h2>Hello!</h2>
+	<h3>Edit Pilot</h3>
+	<form th:action = "@{/pilot/update}" th:object="${currentPilot}" method = "POST">
+		License Number:   <br>
+		<input type = "text" name="licenseNumber" th:value ="${currentPilot.licenseNumber}" readonly = "readonly"/>
+		tidak dapat diganti
+		<br>
+		Name: <br>
+		<input type = "text" name="name" th:value ="${currentPilot.name}"/>
+		<br>
+		Fly Hour: <br>
+		<input type = "number" name="flyHour" th:value ="${currentPilot.flyHour}"/>
+		<br><br>
+		
+		<button type = "submit">Submit</button>
+	</form>
+</body>
+</html>

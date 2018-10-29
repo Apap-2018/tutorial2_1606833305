@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+	<title>Cari Pegawai</title>
+	<object th:include="fragments/fragment :: css" th:remove="tag"></object>
+	<object th:include="fragments/fragment :: js" th:remove="tag"></object>
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+</head>
+
+<style>
+	#kotakcari{
+		margin-top:10px;
+		margin-left:30px;
+	}
+	#kotak-hasil{
+		margin-left : 30px;
+		margin-right: auto;
+		margin-top:15px;
+	}
+</style>
+
+<body>
+	<nav th:replace="fragments/fragment :: navbar"></nav>
+	<div class="row" id = "kotakcari">
+		<div class ="col-md-5" >
+			<div class="card" >
+				<div class = "card-header" style = "font-size:20px">Cari Pegawai</div>
+				<div class="card-body">
+					
+					<form th:action="@{/pegawai/cari}" method = "GET">
+						<div class="form-group">
+						    <label class="control-label col-sm-5" >Provinsi:</label>
+						    <div class="col-sm-12">
+							    <select class="form-control" id="provinsi2" name = "idProvinsi">
+							    	<option th:value = "0">- Pilih Provinsi -</option> 
+							    	<a th:each="prov, iterationStatus : ${provinsi}">
+								    	<option th:text = ${prov.nama} th:value = ${prov.id}></option>
+							      	</a>
+							    </select>
+							</div>
+						</div>
+							  
+						<div class="form-group">
+						    <label class="control-label col-sm-5">Instansi:</label>
+						    <div class="col-sm-12">
+							    <select class="form-control" id="form-inst" name = "idInstansi">
+							    	<option th:value = "0">- Pilih Instansi -</option>
+							      	<a th:each="instansi, iterationStatus : ${instansi}">
+								      	<option class ="instansi" th:text = "${instansi.nama} + ' - ' + ${instansi.provinsi.nama}" th:value = ${instansi.id}></option>
+							      	</a>
+							    </select>
+							</div>
+						 </div>
+						
+							
+						<div class="form-group">
+						    <label class="control-label col-sm-5">Jabatan:</label>
+						    <div class="col-sm-12">
+					    		<select class="form-control" id = "jabatan" name = "idJabatan"> 
+					    			<option th:value = "0">- Pilih Jabatan -</option>
+							    	<a th:each="jabs, iterationStatus : ${jabatan}">
+								    	<option th:text = ${jabs.nama} th:value = ${jabs.id}></option>
+							    </select>
+							</div>	
+						</div>						
+						<button type="submit" class="btn btn-primary" >Cari</button>
+					</div>
+				</form>	
+			</div>
+		</div>
+	</div>
+	
+
+	<div class="row" id = "kotak-hasil">
+		<div class ="col-md-11">
+			<div class="card" id = "kotak">
+				<div class = "card-header">
+					<h5>Daftar Pegawai</h5>
+				</div>
+	
+				<div class="card-body">
+					<table id="table_id2" class="display table table-striped" border = "I"  >
+					    <thead>
+					        <tr>
+					            <th>NIP</th>
+					            <th>Nama</th>
+					            <th>Tempat Lahir</th>
+					            <th>Tanggal Lahir</th>
+					            <th>Tahun Masuk</th>
+					            <th>Nama Instansi</th>
+					            <th>Jabatan</th>
+					        </tr>
+					    </thead>
+					    
+						 <tbody>
+							<tr th:each="peg, iterationStatus : ${pegawai}">
+								<td th:text="${peg.nip}"></td>
+								<td th:text="${peg.nama}"></td>
+									<td th:text="${peg.tanggallahir}"></td>
+								<td th:text="${peg.tempat_lahir}"></td>
+								<td th:text="${peg.tahun_masuk}"></td>	
+								<td th:text="${peg.instansi.nama}"></td>	
+								<td>
+									<div th:each="jabatanPegawai, iterationStatus : ${peg.jabatanPegawai}">
+					      				<div th:text="${iterationStatus.count} + '. ' + ${jabatanPegawai.jabatan.nama}" ></div>
+									</div>
+								</td>			
+							</tr>
+						</tbody>
+					       
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>		
+</body>
+
+<script>
+	$(document).ready( function () {
+	    $('#table_id2').DataTable();
+	});
+	
+	$("#provinsi2").change(function(){
+		console.log ("masuk sini del");
+		var data = $(this).val();
+		var data = $(this).val();
+		$.ajax({
+			headers:{	
+				Accept : "application/json"
+			},
+			contentType: "application/json",
+			type : "GET",
+			data : {id:data},
+			url : "/pegawai/cekInstansi",
+			dataType : "json",
+				success: function(json){
+					var obj = JSON.stringify(json); 
+					var objs = JSON.parse(obj);
+					console.log(objs[0].nama);
+					console.log ("disini");
+					$(".instansi").remove();
+					for (x in objs){
+						console.log(objs[x]);
+						$("#form-inst").append("<option class ='instansi' th:text ="+ "'"+ objs[x].nama+ "'" +" value = "+ "'"+objs[x].id+"'"+">" + objs[x].nama + " - " + objs[x].provinsi.nama + "</option>");
+						console.log (objs[x]);
+						console.log("<option class ='instansi' name = 'instansi' th:text ="+ "'"+ objs[x].nama+ "'" +" th:value = "+ "'"+objs[x].id+"'"+">"+objs[x].nama+"</option>");
+					}
+				}
+		})
+
+	});
+</script>
+</html>

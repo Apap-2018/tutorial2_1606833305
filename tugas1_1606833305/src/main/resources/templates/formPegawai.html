@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlsn:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Tambah Pegawai</title>	
+	<object th:include="fragments/fragment :: css" th:remove="tag"></object>
+	<object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+
+<style>
+	#isi{
+		margin-left : 50px;
+		margin-top:35px;
+	}
+</style>
+<body>
+	<nav th:replace="fragments/fragment :: navbar"></nav>
+	
+	<div class="row" id = "isi">
+		<div class ="col-md-6" >
+			<div class="card" >
+				<div class = "card-header" >Formulir Penambahan Pegawai</div>
+				<div class="card-body">
+					<form th:action="@{/pegawai/tambah}" th:object = ${pegawai} method = "POST">
+					<input  type="hidden" th:field="*{id}"></input>
+						<input  type="hidden" th:field="*{nip}"></input>
+						<div class="form-group">
+							<label class="control-label col-sm-2">Nama:</label>
+							<div class="col-sm-10">
+						    	<input type="text" class="form-control" name="nama" placeholder="Masukkan Nama" th:required = "true">
+						    </div>
+						</div>
+							
+						<div class="form-group">
+							<label class="control-label col-sm-4">Tempat Lahir:</label>
+							<div class="col-sm-10">
+						    	<input type="text" class="form-control" name="tempat_lahir" placeholder="Masukkan Tempat Lahir" th:required = "true">
+						    </div>
+						</div>
+							
+						<div class="form-group">
+							<label class="control-label col-sm-4">Tanggal Lahir:</label>
+							<div class="col-sm-10">
+						    	<input type="date" class="form-control" name="tanggallahir" placeholder="Masukkan Tanggal Lahir" th:required = "true">
+						    </div>
+						</div>
+							
+						<div class="form-group">
+							<label class="control-label col-sm-4">Tahun Masuk:</label>
+							<div class="col-sm-10">
+						    	<input type="text" class="form-control" name="tahun_masuk" placeholder="Masukkan Tahun Masuk" th:required = "true">
+						    </div>
+						</div>
+							  
+						<div class="form-group">
+						    <label class="control-label col-sm-2" >Provinsi:</label>
+						    <div class="col-sm-10">
+							    <select class="form-control" id = "provinsi" th:required = "true"> 
+							    	<option th:value = null>- Pilih Provinsi -</option>
+							    	<a th:each="prov, iterationStatus : ${allProvinsi}">
+								    	<option th:text = ${prov.nama} th:value = ${prov.id}></option>
+							      	</a>
+							    </select>
+							</div>
+						</div>
+							  
+						<div class="form-group">
+						    <label class="control-label col-sm-2">Nama Instansi:</label>
+						    <div class="col-sm-10">
+						    	<div id = "dropdownInstansi">
+						    		<select class="form-control" name = "instansi" disabled id = "instansiAwal" th:required = "true">
+							   			<option th:value = null> -Pilih Instansi - </option>
+										<!-- <a th:each="instansi, iterationStatus : ${allInstansi}">
+										<option th:text = "${instansi.nama} + ' - ' + ${instansi.provinsi.nama}" th:value = ${instansi.id}></option> 
+										</a>-->
+							    	</select>
+						    	</div>
+							</div>
+						 </div>
+							
+						<div class="form-group">
+						    <label class="control-label col-sm-2">Jabatan:</label>
+						    <div class="col-sm-10">
+					
+						    	<div id = "kumpulanRowJabatan">
+						    		<select name = "jabatanPegawai[0].jabatan" class="form-control" id = "jabatan" th:required = "true"> 
+						    			<option th:value = null>- Pilih Jabatan -</option>
+								    	<a th:each="jabs, iterationStatus : ${allJabatan}">
+									    	<option th:text = ${jabs.nama} th:value = ${jabs.id}></option>
+								      	</a>
+								    </select><br>
+						    	</div>
+								<div style = "color:blue" value = "2" name="addRow" id= "buttonJabatan" >Tambah Jabatan Lainnya</div>
+							</div>
+							
+						</div>						
+						<button type="submit" class="btn btn-primary">Simpan</button>
+					</div>
+				</form>	
+			</div>
+		</div>
+	</div>		
+</body>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script src = "https://code.jquery.com/jquery-1.12.4.js"></script>
+<script>
+	$("#provinsi").change(function(){
+		console.log("masuk");
+		var data = $(this).val();
+		$.ajax({
+			headers:{	
+				Accept : "application/json"
+			},
+			contentType: "application/json",
+			type : "GET",
+			data : {id:data},
+			url : "/pegawai/cekInstansi",
+			dataType : "json",
+				success: function(json){
+					var obj = JSON.stringify(json); 
+					var objs = JSON.parse(obj);
+					$("#instansiAwal").remove();
+					
+					var selectHtml = '<select class="form-control" name="instansi" id = "instansiAwal" required>\n';
+
+		            var optionsHtml = '';
+
+		            $.each(objs, function(i, objs ) {
+		            	optionsHtml += '<option value=' + objs.id + '>' + objs.nama + ' - ' + objs.provinsi.nama +'</option>';
+		                });
+
+		            var closingSelectHtml = '</select>';
+		            $( "#dropdownInstansi" ).append(selectHtml + optionsHtml + closingSelectHtml);
+					}
+			
+		            
+					//for (x in objs){
+						//console.log(objs[x]);
+						//$("#form-inst").append("<option class ='instansi' value = " + objs[x].id + ">" + objs[x].nama + " - " + objs[x].provinsi.nama + "</option>");
+						//console.log("<option class ='instansi' value = " + "'" + objs[x].id + "'" + ">" + objs[x].nama + "</option>");
+					//}
+				
+		})
+	});
+	var jabatanCount = 0;
+	$("#buttonJabatan").click(function(){
+		console.log("masuk");
+		var data = $(this).val();
+		$.ajax({
+			headers:{	
+				Accept : "application/json"
+			},
+			contentType: "application/json",
+			type : "GET",
+			data : {id:data},
+			url : "/pegawai/cekJabatan",
+			dataType : "json",
+				success: function(json){
+					
+					console.log ("disini");
+					
+					var jab = JSON.stringify(json); 
+					var jabatan = JSON.parse(jab);
+					console.log(jabatan);
+					jabatanCount++;
+	                var selectHtml = '<select class="form-control" id="jabatanPegawai" name="jabatanPegawai['+ jabatanCount +'].jabatan" required>\n';
+
+	                var optionsHtml = '<option value = 0>- Pilih Jabatan -</option>';
+
+	                $.each( jabatan, function(i, jabatan ) {
+	                    optionsHtml += '<option value=' + jabatan.id + '>' + jabatan.nama + '</option>';
+	                });
+
+	                var closingSelectHtml = '</select><br>';
+
+	                $( "#kumpulanRowJabatan" ).append(selectHtml + optionsHtml + closingSelectHtml);
+				}
+		})
+	});
+	
+
+	
+	
+	//$(document).ready( function () {
+		//$("#buttonJabatan").click(function(){
+			//console.log ("haha");
+			//console.log(${allJabatan});
+			//$(".tambahRowJabatan").append("<select name = 'jabatanPegawai' class='form-control' id = 'jabatan'> <a th:each='jabs, iterationStatus : ${allJabatan}'>  <option th:text = ${jabs.nama} value = ${jabs.id}></option> </a>  <th><button class='btn btn-primary' type='submit' name='addRow' id= 'buttonJabatan'>Tambah Jabatan Lainnya</button></th> </select>");
+		//});
+	//} );
+	
+	
+</script>
+

@@ -1,0 +1,57 @@
+﻿Nama	: Delfa Agustia
+NPM	: 1606833305
+Kelas	: APAP-B
+Github	: https://github.com/delfaagustia/Tutorial01
+
+
+Latihan
+1. Apa tujuan dari perintah git fork ​dan git merge​?
+	- git fork	: perintah untuk meng-copy suatu repasitory. fork akan jadi koneksi/jembatan antara original repasitory dan repasitory hasil fork tadi, 
+			nantinya ketika kita ingin berkontribusi ke original repasitory bisa pull request ke original repository. 
+			fork tidak mengcopy commit history yang ada di original repasitory.
+	- git merge​	: perintah git untuk menggabungkan pekerjaan/file yang ada pada beberapa branch kedalam 1 branch.
+
+
+2. Apakah git clone​ itu?
+	Perintah untuk menyalin suatu repasitory ke komputer lokal, tapi tidak ada koneksi antara keduanya. 
+	Jika kita bukan Collaborator di original repasitory maka kita tidak bisa berkontribusi ke original repasitory (pull request).
+	git clone akan menyalin data file dan commit history repasitory original tadi.
+	
+
+3. Apakah perbedaan git fetch​ dengan git pull​?
+	- git fetch​	: perintah untuk mengambil/menarik data terbaru (yang belum kita miliki) dari repasitory server tersebut
+			dan tidak otomatis digabungkan dengan data yang sudah ada di branch yang aktif saat ini.
+	- git pull	: perintah untuk mengambil/menarik data juga seperti git fetch tapi akan secara otomatis 
+			digabungkan/diintegrasikan dengan branch kita yang aktif saat ini.
+			
+
+
+4. Apakah merge conflict dalam konteks Git? Bagaimana menyelesaikannya?
+	Merge conflict biasanya terjadi ketika ingin melakukan pull dari suatu branch repasitory yang sama (ex. branch master). 
+	Contoh conflict ketika ada line yang overwrite, 
+		misal si A menambahkan data baru disuatu file tanpa melakukan pull sebelumnya, 
+		sedangkan si B sudah duluan melakukan perubahan di file yang diubah si A dan melakukan push ke repasitory itu 
+		saat ini kondisi file di lokal si A tidak se update yang ada di branch (setelah si B nge push), 
+		jadi ketika si A melakukan pull akan terjadi overwrite (code nya bisa numpuk di line yang sama), disini terjadi merge conflict.
+	atau ada juga removed file merge conflict (karna ada file yang dihapus tapi masih di pakai oleh branch lain)
+	
+	solusinya :
+		di edit secara manual file yang overwrite/terhapus tadi, 
+		biasanya ada tanda di file tersebut dan akan ada keterangan di git bash, 
+		rapikan dan bersihkan lagi kode/isi file tersebut sesuai dengan petunjuk conflict yang ditemukan. 
+		Lalu di push/merge lagi ke repasitory pusat/branch yang diinginkan.
+
+Sumber : 
+https://github.community/t5/Support-Protips/The-difference-between-forking-and-cloning-a-repository/ba-p/1372
+https://www.atlassian.com/git/tutorials/using-branches/git-merge
+
+
+Nama Kelompok: sisterangers 2.0
+
+Nama Ketua: Rafiqa Amini M - 1606917834
+
+Anggota: 
+
+Delfa Agustia - 1606833305
+Puteri Khatya Fahira - 1606834384
+Zulia Putri R - 1606918446
